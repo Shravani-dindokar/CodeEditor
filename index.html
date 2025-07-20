@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Code Editor</title>
+
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/dracula.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <script src="https://kit.fontawesome.com/a88befdcf8.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <label><i class="fa-brands fa-html5"></i> HTML</label>
+            <textarea id="html-code"></textarea>
+
+            <label><i class="fa-brands fa-css3-alt"></i> CSS</label>
+            <textarea id="css-code"></textarea>
+
+            <label><i class="fa-brands fa-js"></i> JavaScript</label>
+            <textarea id="js-code"></textarea>
+
+            <button onclick="run()">Run <i class="fa-solid fa-play"></i></button>
+        </div>
+
+        <div class="right">
+            <label><i class="fa-solid fa-display"></i> Output</label>
+            <iframe id="output"></iframe>
+        </div>
+    </div>
+
+    <!-- CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/css/css.min.js"></script>
+
+    <script>
+        // Initialize CodeMirror Editors
+        var htmlEditor = CodeMirror.fromTextArea(document.getElementById("html-code"), {
+            mode: "xml",
+            theme: "dracula",
+            lineNumbers: true
+        });
+
+        var cssEditor = CodeMirror.fromTextArea(document.getElementById("css-code"), {
+            mode: "css",
+            theme: "dracula",
+            lineNumbers: true
+        });
+
+        var jsEditor = CodeMirror.fromTextArea(document.getElementById("js-code"), {
+            mode: "javascript",
+            theme: "dracula",
+            lineNumbers: true
+        });
+
+        // Run Button Function
+        function run() {
+            let htmlCode = htmlEditor.getValue();
+            let cssCode = `<style>${cssEditor.getValue()}</style>`;
+            let jsCode = `<script>${jsEditor.getValue()}<\/script>`;
+
+            let output = document.getElementById("output").contentWindow.document;
+            output.open();
+            output.write(htmlCode + cssCode + jsCode);
+            output.close();
+        }
+    </script>
+</body>
+</html>
